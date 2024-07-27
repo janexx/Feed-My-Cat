@@ -8,12 +8,11 @@ public class GameManager : MonoBehaviour
     public int currentLevel = 1;
     public int score = 0;
     private int scoreTreshold = 10;
-    private int highscore;
 
     private TextMeshProUGUI scoreText;
     private TextMeshProUGUI levelText;
     public TextMeshProUGUI txtHighscorePlayerName;
-    public TextMeshProUGUI txt_highscore;
+    public TextMeshProUGUI txtHighscore;
 
     private static TextMeshProUGUI catText;
     private PlayerControler playerControler;
@@ -26,6 +25,7 @@ public class GameManager : MonoBehaviour
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponentInChildren<TextMeshProUGUI>();
         levelText = GameObject.FindGameObjectWithTag("Level").GetComponentInChildren<TextMeshProUGUI>();        
         playerControler = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControler>();
+        PrintHighscore();
     }
 
     public void StartGame()
@@ -42,11 +42,11 @@ public class GameManager : MonoBehaviour
     {
         levelText.text = "Level: " + currentLevel;
         UpdateLevel();
+        CalculateHighscore();
 
 
         if (playerControler != null)
         {
-            Debug.Log($"gameIsOver Status: {playerControler.gameIsOver}");
             if (playerControler.gameIsOver)
             {
                 Debug.Log("Quit Game");
@@ -94,7 +94,7 @@ public class GameManager : MonoBehaviour
         spawnManager.StopSpawning();
         spawnManager.DestroyCereals();
         ambientMusic.Stop();
-        StartCoroutine("WaitForGameEnding"); 
+        StartCoroutine("WaitForGameEnding");
         //Save Score in MainManager
         MainManager.SetPlayerScore(score);
         Debug.Log("Player score: " + score);
@@ -107,6 +107,23 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("GameOver");
     }
 
+    private void CalculateHighscore()
+    {
+        // When current score > highscore, the current score is the new highscore, the currect player gets highscore-player
+        if (score > MainManager.highscore)
+        {
+            MainManager.highscore = score;
+            MainManager.highscorePlayer = MainManager.playerName;
+
+        }
+    }
+
+    private void PrintHighscore()
+    {
+        txtHighscore.text = MainManager.highscore.ToString();       
+        txtHighscorePlayerName.text = MainManager.highscorePlayer;
+        Debug.Log("Highscore: " + txtHighscorePlayerName.text + "  " +  txtHighscore.text);
+    }
 
 
 }

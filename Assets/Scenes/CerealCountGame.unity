@@ -2984,8 +2984,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   currentLevel: 1
   score: 0
-  highscorePlayerName: {fileID: 0}
-  highscore: {fileID: 0}
+  txtHighscorePlayerName: {fileID: 1978671846}
+  txtHighscore: {fileID: 778555900}
   spawnManager: {fileID: 216652849}
   ambientMusic: {fileID: 1188766542}
 --- !u!4 &1497734704

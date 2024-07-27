@@ -5,10 +5,12 @@ using UnityEngine;
 
 // This script stores the data which should persist between scenes
 public class MainManager : MonoBehaviour
-{    
+{
     // values stored in this class member will be shared by all the instances of that class
     public static int playerScore;
+    public static int highscore;
     public static string playerName;
+    public static string highscorePlayer;
 
     // Statische Methode zum Setzen des Spielernamens
     public static void SetPlayerName(string name)
