@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class Cereals : MonoBehaviour
 {
-    public int myScorePoint = 10;
+    public int myScorePoint = 1;
     public bool foodIsCollected = false;
     private GameManager gamemanager;
 
@@ -22,8 +22,6 @@ public class Cereals : MonoBehaviour
     {
         if (collision.gameObject.tag == "Player")
         {
-            Debug.Log("Foot collected");
-            //StartCoroutine("DestroyFoodOnClipend");
             foodIsCollected = true;
             Destroy(gameObject);
             gamemanager.UpdateScore(myScorePoint);
@@ -37,16 +35,6 @@ public class Cereals : MonoBehaviour
             foodIsCollected = false;
         }
     }
-
-    // Wait until the AUdio clip ends end then destroy the food object
-    /*IEnumerator DestroyFoodOnClipend()
-    {
-        yield return new WaitForSeconds(foodAudio.clip.length);
-        Destroy(gameObject);
-    } */
-
-    
-
     
 }
 

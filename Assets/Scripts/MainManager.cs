@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
+using UnityEditorInternal;
 
 // This script stores the data which should persist between scenes
 public class MainManager : MonoBehaviour
@@ -11,6 +13,11 @@ public class MainManager : MonoBehaviour
     public static int highscore;
     public static string playerName;
     public static string highscorePlayer;
+
+    private void Awake()
+    {
+        LoadHighscore();
+    }
 
     // Statische Methode zum Setzen des Spielernamens
     public static void SetPlayerName(string name)
@@ -34,4 +41,43 @@ public class MainManager : MonoBehaviour
         return MainManager.playerName;
     }
 
+    public static int GetHighscore()
+    {
+        return highscore;
+    }
+
+
+    // Save Highscore data to file
+    [System.Serializable]
+    class SaveData
+    {
+        public string highscorePlayer;
+        public int highscore;
+    }
+
+    public static void SaveHighscore()
+    {
+        SaveData data = new SaveData();
+        data.highscorePlayer = playerName;
+        data.highscore = highscore;
+
+        string json = JsonUtility.ToJson(data);
+
+        File.WriteAllText(Application.persistentDataPath + "/savefile.json", json);
+    }
+
+    // Load data from file
+    public static void LoadHighscore()
+    {
+        string path = Application.persistentDataPath + "/savefile.json";
+        if (File.Exists(path))
+        {
+            string json = File.ReadAllText(path);
+            SaveData data = JsonUtility.FromJson<SaveData>(json);
+
+            playerName = data.highscorePlayer;
+            highscore = data.highscore;
+
+        }
+    }
 }

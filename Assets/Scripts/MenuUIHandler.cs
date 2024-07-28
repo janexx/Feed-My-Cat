@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
@@ -24,7 +22,7 @@ public class MenuUIHandler : MonoBehaviour
     // Set static player name in MainManager
     public void SetPlayerName(String name)
     {
-        MainManager.playerName = inputfield.text;
+        MainManager.SetPlayerName(inputfield.text);
         Debug.Log("Player Name is: " + MainManager.playerName);
     }
 

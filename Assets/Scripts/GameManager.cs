@@ -6,10 +6,12 @@ using System.Collections;
 public class GameManager : MonoBehaviour
 {
     public int currentLevel = 1;
-    public int score = 0;
+    public static int score = 0;
     private int scoreTreshold = 10;
+    public static bool highscoreIsBeaten;
 
     private TextMeshProUGUI scoreText;
+    public TextMeshProUGUI playerName;
     private TextMeshProUGUI levelText;
     public TextMeshProUGUI txtHighscorePlayerName;
     public TextMeshProUGUI txtHighscore;
@@ -22,10 +24,18 @@ public class GameManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // Print GUI text elements
         scoreText = GameObject.FindGameObjectWithTag("Score").GetComponentInChildren<TextMeshProUGUI>();
         levelText = GameObject.FindGameObjectWithTag("Level").GetComponentInChildren<TextMeshProUGUI>();        
         playerControler = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerControler>();
-        PrintHighscore();
+        playerName.text = MainManager.GetPlayerName();
+        // Initialization
+        currentLevel = 1;
+        score = 0;
+        highscoreIsBeaten = false;
+        // Load current Highscore
+        MainManager.LoadHighscore();
+        
     }
 
     public void StartGame()
@@ -41,8 +51,13 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         levelText.text = "Level: " + currentLevel;
+        scoreText.text = "Score :" + score;
         UpdateLevel();
+
+        // Update highscore on screen
         CalculateHighscore();
+        PrintHighscore();
+
 
 
         if (playerControler != null)
@@ -75,10 +90,10 @@ public class GameManager : MonoBehaviour
     // Update score with value from food item and show it on Canvas
     public void UpdateScore(int scoreToAdd)
     {
-        // Get current score from Food which was collected        
+        // Get current score from Food which was collected  
         score += scoreToAdd;
-        scoreText.text = "Score :" + score;
-        if(playerControler != null)
+        Debug.Log("Updated core: " + score);
+        if (playerControler != null)
         {
             playerControler.foodIsCollected = false;
         }        
@@ -97,6 +112,8 @@ public class GameManager : MonoBehaviour
         StartCoroutine("WaitForGameEnding");
         //Save Score in MainManager
         MainManager.SetPlayerScore(score);
+        // Save Highscore data in externa JSON file
+        MainManager.SaveHighscore();
         Debug.Log("Player score: " + score);
     }
 
@@ -114,14 +131,14 @@ public class GameManager : MonoBehaviour
         {
             MainManager.highscore = score;
             MainManager.highscorePlayer = MainManager.playerName;
-
+            highscoreIsBeaten = true;
         }
     }
 
     private void PrintHighscore()
     {
         txtHighscore.text = MainManager.highscore.ToString();       
-        txtHighscorePlayerName.text = MainManager.highscorePlayer;
+        txtHighscorePlayerName.text = MainManager.GetPlayerName();
         Debug.Log("Highscore: " + txtHighscorePlayerName.text + "  " +  txtHighscore.text);
     }
 
