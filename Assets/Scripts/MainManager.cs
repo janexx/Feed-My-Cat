@@ -1,9 +1,6 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using UnityEditorInternal;
 
 // This script stores the data which should persist between scenes
 public class MainManager : MonoBehaviour
